@@ -1,4 +1,4 @@
-run = "npm start"
+run = "npm install --prefix server && npm install --prefix client && npm run build --prefix client && NODE_ENV=production node server/index.js"
 entrypoint = "server/index.js"
 
 [nix]
