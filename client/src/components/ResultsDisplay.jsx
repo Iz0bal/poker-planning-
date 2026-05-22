@@ -8,14 +8,17 @@ export default function ResultsDisplay({ users }) {
       ? (numericVotes.reduce((a, b) => a + b, 0) / numericVotes.length).toFixed(1)
       : null;
 
-  const voteCounts = users.reduce((acc, u) => {
+  // Group user names by their vote value
+  const voteGroups = users.reduce((acc, u) => {
     if (u.vote !== null) {
-      acc[u.vote] = (acc[u.vote] || 0) + 1;
+      if (!acc[u.vote]) acc[u.vote] = [];
+      acc[u.vote].push(u.name);
     }
     return acc;
   }, {});
 
-  const consensus = Object.keys(voteCounts).length === 1;
+  const consensus = Object.keys(voteGroups).length === 1;
+  const totalVoters = users.filter((u) => u.vote !== null).length;
 
   return (
     <div className="results">
@@ -31,18 +34,28 @@ export default function ResultsDisplay({ users }) {
           </div>
         )}
         <div className="results-votes">
-          {Object.entries(voteCounts)
+          {Object.entries(voteGroups)
             .sort((a, b) => {
               const na = parseFloat(a[0]);
               const nb = parseFloat(b[0]);
               if (!isNaN(na) && !isNaN(nb)) return na - nb;
               return String(a[0]).localeCompare(String(b[0]));
             })
-            .map(([vote, count]) => (
+            .map(([vote, names]) => (
               <div key={vote} className="results-vote-item">
-                <span className="results-vote-value">{vote}</span>
-                <span className="results-vote-bar" style={{ '--count': count, '--total': users.length }} />
-                <span className="results-vote-count">{count}×</span>
+                <div className="results-vote-row">
+                  <span className="results-vote-value">{vote}</span>
+                  <span
+                    className="results-vote-bar"
+                    style={{ '--count': names.length, '--total': totalVoters }}
+                  />
+                  <span className="results-vote-count">{names.length}×</span>
+                </div>
+                <div className="results-vote-names">
+                  {names.map((name, i) => (
+                    <span key={i} className="results-vote-name">{name}</span>
+                  ))}
+                </div>
               </div>
             ))}
         </div>

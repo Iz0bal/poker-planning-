@@ -383,11 +383,33 @@ body {
 
 .results-vote-item {
   display: flex;
-  align-items: center;
-  gap: 0.75rem;
+  flex-direction: column;
+  gap: 0.4rem;
   background: var(--surface);
   border-radius: var(--radius);
-  padding: 0.5rem 1rem;
+  padding: 0.6rem 1rem;
+}
+
+.results-vote-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.results-vote-names {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  padding-left: 44px;
+}
+
+.results-vote-name {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--dark);
+  background: rgba(26, 16, 64, 0.08);
+  padding: 0.15rem 0.55rem;
+  border-radius: var(--pill);
 }
 
 .results-vote-value {
